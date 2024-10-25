@@ -1,15 +1,23 @@
 <?php
+// Enable error reporting for development (disable in production)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+$start_time = microtime(true);
+
+// Autoload dependencies and include necessary files
 require_once 'vendor/autoload.php';
+require_once 'app/core.php';
 require_once 'app/posts.php';
 require_once 'app/pages.php';
 require_once 'app/plugins.php';
 require_once 'app/generate.php';
 require_once 'app/api.php';
 
-$config = include('config.php');
+$config = include 'config.php';
 
 $router = new AltoRouter();
-$router->setBasePath($config['base_url']);
+$router->setBasePath($config['base_path']);
 
 /* ============================================
    Plugins
@@ -21,109 +29,132 @@ load_plugins();
    Subscription Feeds
  ============================================ */
 
-$router->map('GET','/json/', function() { 
-	header('Content-type: application/json');
-	echo generate_json(get_posts());
+// JSON Feed
+$router->map('GET|HEAD', '/json/', function () {
+    header('Content-Type: application/json');
+    $posts = get_posts();
+    if ($posts) {
+        echo generate_json($posts);
+    } else {
+        echo json_encode(['error' => 'No posts found']);
+    }
 });
 
-$router->map('GET','/rss/', function() { 
-	header('Content-type: application/xml');
-	echo generate_rss(get_posts());
+// RSS Feed
+$router->map('GET|HEAD', '/rss/', function () {
+    header('Content-Type: application/xml');
+    $posts = get_posts();
+    if ($posts) {
+        echo generate_rss($posts);
+    } else {
+        echo '<error>No posts found</error>';
+    }
 });
 
 /* ============================================
    API
  ============================================ */
 
-$router->map('GET','/api/feed/', function() { 
-	header('Content-type: application/json');
-	echo generate_json(api_feed());
+// API Feed
+$router->map('GET|HEAD', '/api/feed/', function () {
+    header('Content-Type: application/json');
+    $feed = api_feed();
+    if ($feed) {
+        echo generate_json($feed);
+    } else {
+        echo json_encode(['error' => 'No feed data available']);
+    }
 });
 
-$router->map('GET','/api/single/', function() { 
-	header('Content-type: application/json');
-	echo generate_json(api_single());
+// API Single Post
+$router->map('GET|HEAD', '/api/single/', function () {
+    header('Content-Type: application/json');
+    $single = api_single();
+    if ($single) {
+        echo generate_json($single);
+    } else {
+        echo json_encode(['error' => 'No post found']);
+    }
 });
 
 /* ============================================
    Front-end
  ============================================ */
 
-// If the front-end option in config is set to false, skip the loading of frontend functionality
-if(!$config['use_frontend']) {
-	$router->map('GET','/', function() { 
-		require 'views/default.php';
-	});
+// Check if front-end is enabled in the configuration
+if (!$config['use_frontend']) {
+    $router->map('GET|HEAD', '/', function () {
+        require 'views/default.php';
+    });
 } else {
-	require_once 'app/frontend.php';
-	require_once 'themes/' . $config['frontend_theme'] . '/functions.php';
-	
-	$router->map('GET','/tag/[:tag]/[i:page]?/', function($tag, $page = 1) {
-		$config = include('config.php'); 
-		$posts = get_posts($page, $config['posts_per_page'], $tag);
-		$tag = str_replace('%20', ' ', $tag);
-		
-		if($posts) {
-			include 'themes/' . $config['frontend_theme'] . '/tag.php';
-		} else {
-			error_404();
-		}
-	});
-	
-	$router->map('GET','/[i:page]?/', function($page = 1) {
-		$config = include('config.php'); 
-		$posts = get_posts($page);
+    require_once 'app/frontend.php';
+    require_once 'themes/' . $config['frontend_theme'] . '/functions.php';
 
-		if($posts) {
-			include 'themes/' . $config['frontend_theme'] . '/home.php';
-		} else {
-			error_404();
-		}
-	});
-	
-	$router->map('GET','/page/[:page]/', function($page) { 
-		$config = include('config.php');
-		$page = get_page($page);
-		if($page->title) {
-			include 'themes/' . $config['frontend_theme'] . '/page.php';
-		} else {
-			error_404();
-		}
-	});
+    // Tag Page
+    $router->map('GET|HEAD', '/tag/[:tag]/[i:page]?/', function ($tag, $page = 1) use ($config) {
+        $tag = urldecode($tag);
+        $posts = get_posts($page, $config['posts_per_page'], $tag);
 
-	// Must be last to ensure other routes get detected first
-	if($config['post_base']) {
-		$router->map('GET','/[:year]/[:month]/[:slug]/', function($year, $month, $slug) { 
-			$config = include('config.php');
-			$post = get_single($slug, $year, $month);
-			if($post->title) {
-				include 'themes/' . $config['frontend_theme'] . '/single.php';
-			} else {
-				error_404();	
-			}
-		});
-	}
-	else {	
-		$router->map('GET','/[:slug]/', function($slug) { 
-			$config = include('config.php');
-			$post = get_single($slug);
-			if($post->title) {
-				include 'themes/' . $config['frontend_theme'] . '/single.php';
-			} else {
-				error_404();	
-			}
-		});	
-	}
+        if ($posts) {
+            include 'themes/' . $config['frontend_theme'] . '/tag.php';
+        } else {
+            error_404();
+        }
+    });
+
+    // Home Page
+    $router->map('GET|HEAD', '/[i:page]?/', function ($page = 1) use ($config) {
+        $posts = get_posts($page);
+
+        if ($posts) {
+            include 'themes/' . $config['frontend_theme'] . '/home.php';
+        } else {
+            error_404();
+        }
+    });
+
+    // Single Post or Page
+    $router->map('GET|HEAD', '/[:slug]/', function ($slug) use ($config) {
+        // Attempt to get post
+        $post = get_single($slug);
+
+        if ($post && isset($post->title)) {
+            include 'themes/' . $config['frontend_theme'] . '/single.php';
+            return;
+        }
+
+        // Attempt to get page
+        $page = get_page($slug);
+        if ($page && isset($page->title)) {
+            include 'themes/' . $config['frontend_theme'] . '/page.php';
+            return;
+        }
+
+        // If neither post nor page is found, display 404
+        error_404();
+    });
+
+    // Posts with date in URL (if post_base is active)
+    if ($config['post_base']) {
+        $router->map('GET|HEAD', '/[:year]/[:month]/[:slug]/', function ($year, $month, $slug) use ($config) {
+            $post = get_single($slug, $year, $month);
+            if ($post && isset($post->title)) {
+                include 'themes/' . $config['frontend_theme'] . '/single.php';
+            } else {
+                error_404();
+            }
+        });
+    }
 }
 
 /* ============================================
-   Matching
+   Route Matching and Dispatch
  ============================================ */
 
 $match = $router->match();
 
-if($match) {
-	call_user_func_array( $match['target'], $match['params'] ); 
+if (is_array($match) && is_callable($match['target'])) {
+    call_user_func_array($match['target'], $match['params']);
 } else {
-	error_404();
+    error_404();
 }

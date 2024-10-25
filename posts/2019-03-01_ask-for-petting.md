@@ -2,7 +2,7 @@
 title: Ask for petting
 tags: Human Interaction
 excerpt: Chase red laser dot run around the house at 4 in the morning yet run in circles, or put toy mouse in food bowl run out of litter box at full speed your pillow is now my pet bed.
-image: http://placekitten.com/900/400
+image: https://loremflickr.com/900/400
 ---
 
 I haven't decided whether or not I wanna go out gate keepers so show belly. Purrr purr littel cat, little cat purr purr when owners are asleep, cry for no apparent reason or leave hair everywhere, but howl uncontrollably for no reason or howl uncontrollably for no reason. 
@@ -42,11 +42,11 @@ Thinking longingly about tuna brine fight an alligator and win attack dog, run a
 
 ### Image
 
-![Meow meow](http://placekitten.com/1000/700)
+![Meow meow](https://loremflickr.com/1000/700)
 
 I will ruin the couch with my claws meoooow if human is on laptop sit on the keyboard and i just saw other cats inside the house and nobody ask me before using my litter box and attack the child. Wake up human for food at 4am open the door, let me out, let me out, let me-out, let me-aow, let meaow, meaow! 
 
-Thank you [Cat Ipsum](http://www.catipsum.com/index.php) for some of the dummy text and [placekitten](http://placekitten.com/) for the placeholder imagery.
+Thank you [Cat Ipsum](https://www.catipsum.com/index.php) for some of the dummy text and [loremflickr](https://loremflickr.com/) for the placeholder imagery.
 
 [^1]: I haven't decided whether or not I wanna go out gate keepers so show belly.
 [^2]: Chew foot. Play time cat cat moo moo lick ears lick paws. Lick human with sandpaper tongue dismember a mouse and then regurgitate parts of it on the family room floor.

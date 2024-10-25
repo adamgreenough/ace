@@ -1,33 +1,32 @@
 <?php
-	
-// Convert markdown to HTML
+use Michelf\MarkdownExtra;
+use Suin\RSSWriter\Feed;
+use Suin\RSSWriter\Channel;
+use Suin\RSSWriter\Item;
+
 function convert_markdown($content) {
-	$markdown = new ParsedownExtra();	
-	$content = $markdown->text($content);
-	return $content;
+    return MarkdownExtra::defaultTransform($content);
 }
 
-// Convert array of posts into JSON
 function generate_json($posts) {
     return json_encode($posts, JSON_PRETTY_PRINT);
 }
 
-// Convert array of posts into RSS
 function generate_rss($posts) {
-    $feed = new Suin\RSSWriter\Feed();
-    $channel = new Suin\RSSWriter\Channel();
+    global $config;
 
-	$config = include('config.php');
+    $feed = new Feed();
+    $channel = new Channel();
 
     $channel
         ->title($config['blog_name'])
         ->description($config['blog_description'])
         ->appendTo($feed);
 
-    foreach($posts as $p){
-        $item = new Suin\RSSWriter\Item();
+    foreach ($posts as $p) {
+        $item = new Item();
         $url = get_post_link($p);
-        
+
         $item
             ->title($p->title)
             ->description($p->body)

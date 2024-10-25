@@ -1,47 +1,47 @@
 <?php
-return array(	
+return [
 
-/* ============================================
-   Blog Settings
- ============================================ */
+    /* ============================================
+       Blog Settings
+     ============================================ */
 
-// Posts per page
-'posts_per_page' => 4,
+    // Posts per page
+    'posts_per_page' => 4,
 
-// The direct URL to your blog without a trailing slash (eg. https://adgr.dev or https://adgr.dev/blog)
-'blog_url' => '',
+    // The direct URL to your blog without a trailing slash (e.g., https://adgr.dev or https://adgr.dev/blog)
+    'blog_url' => 'https://example.com', 
 
-// The name of your blog
-'blog_name' => 'Nicholas Demo',
+    // If your CMS installation is not in the web root,
+    // enter your folder name here with no preceding slash (e.g., 'blog') 
+    'base_path' => '',
 
-// A short description of your blog
-'blog_description' => 'Welcome to my amazing blog powered by Nicholas',
+    // The name of your blog
+    'blog_name' => 'Nicholas Demo',
 
-/* ============================================
-   Front-end Settings
- ============================================ */
- 
-// Use the front-end (true) or API-only (false)?
-'use_frontend' => true,
+    // A short description of your blog
+    'blog_description' => 'Welcome to my amazing blog powered by Nicholas',
 
-// Front-end theme
-'frontend_theme' => 'default',
- 
-// Date format
-'date_format' => 'jS F Y',
+    /* ============================================
+       Front-end Settings
+     ============================================ */
+     
+    // Use the front-end (true) or API-only (false)?
+    'use_frontend' => true,
 
-// Page title seperator
-'title_seperator' => '|',
+    // Front-end theme
+    'frontend_theme' => 'default',
+     
+    // Date format
+    'date_format' => 'jS F Y',
 
-/* ============================================
-   Advanced Settings
- ============================================ */
+    // Page title separator
+    'title_separator' => '|',
 
-// If your Nicholas installation is not in the web root,
-// enter your folder name here with a preceding slash (eg. /blog)
-'base_url' => '/',
+    /* ============================================
+       Advanced Settings
+     ============================================ */
 
-// Prepend year and month to post URLs to help avoid slug conflicts?
-'post_base' => false
+    // Prepend year and month to post URLs to help avoid slug conflicts?
+    'post_base' => false
 
-);
+];

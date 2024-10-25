@@ -7,7 +7,7 @@
 		
 <?php foreach($posts as $post) { ?>		
 	<article class="blog-preview">
-		<a href="<?= $config['base_url'] . '/' . $post->slug; ?>/">
+		<a href="<?= $config['base_path'] . '/' . $post->slug; ?>/">
 			<h2><?= $post->title; ?></h2>
 		</a>
 		<p><?= $post->excerpt; ?></p>

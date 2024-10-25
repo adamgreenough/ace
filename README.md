@@ -23,7 +23,7 @@ I built Nicholas to be everything I wanted from a blogging system and nothing mo
 👋 Portable, drag & drop install with very little configuration  
 
 ## Requirements
-- PHP 7.2
+- PHP 7.2+
 - mod_rewrite
 
 ## Getting Started
@@ -33,4 +33,4 @@ Nicholas features an incredibly simple drag and drop install process. The **[Nic
 Contributions welcome! Check the **[current issues](https://github.com/adamgreenough/nicholas/issues)** for inspiration or why not create and share a new **[theme](https://github.com/adamgreenough/nicholas/wiki/4.-Themes)**?
 
 ## License
-&copy; Adam Greenough 2019. Licensed under the MIT license (see LICENSE).
+&copy; Adam Greenough 2019-2023. Licensed under the MIT license (see LICENSE).
