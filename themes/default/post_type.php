@@ -1,13 +1,11 @@
-<?php get_header(); ?>
+<?php 
+    $title = htmlspecialchars(ucfirst($post_type));
+    get_header($title); 
+?>
 
-<?php foreach ($posts as $post): ?>
-    <?php
-        // Retrieve the taxonomy name for the current post type
-        global $config;
-        $post_types_config = $config['post_types'];
-        $post_type_settings = $post_types_config[$post->post_type];
-        $taxonomy_name = $post_type_settings['taxonomy'];
-    ?>
+<h1><?= $title; ?></h1>
+
+<?php foreach ($posts as $post): ?>      
     <article class="blog-preview">
         <a href="<?= get_post_link($post); ?>">
             <h2><?= htmlspecialchars($post->title); ?></h2>
@@ -15,7 +13,14 @@
         <p><?= $post->excerpt; ?></p>
         <p class="small">
             <?= date($config['date_format'], $post->date); ?>
-            <?php if (!empty($post->tags) && $taxonomy_name): ?>
+            <?php
+                // Retrieve the taxonomy name for the current post type
+                $post_types_config = $config['post_types'];
+                $post_type_settings = $post_types_config[$post->post_type];
+                $taxonomy_name = $post_type_settings['taxonomy'];
+
+                if (!empty($post->tags) && $taxonomy_name):
+            ?>
                 • Filed under <?= display_tag_list($post->tags, $taxonomy_name); ?>
             <?php endif; ?>
         </p>
@@ -25,7 +30,7 @@
 <div class="pagination">
     <div class="prev">
         <?php 
-            $pagination = get_pagination_link($page, null, null, 'posts');
+            $pagination = get_pagination_link($page, null, null, $post_type);
             $prevLink = $pagination['prev'];
             if($prevLink): ?>
                 <a href="<?= $prevLink; ?>" title="Previous Page">&laquo; Newer Posts</a>

@@ -1,7 +1,7 @@
 ---
-title: Thinking longingly about tuna brine
-tags: Food
-excerpt: Play with food and get confused by dust chase dog then run away eat too much then proceed to regurgitate all over living room carpet while humans eat dinner for rub whiskers on bare skin act innocent.
+title: Ask for petting
+tag: Human Interaction
+excerpt: Chase red laser dot run around the house at 4 in the morning yet run in circles, or put toy mouse in food bowl run out of litter box at full speed your pillow is now my pet bed.
 image: https://loremflickr.com/900/400
 ---
 
